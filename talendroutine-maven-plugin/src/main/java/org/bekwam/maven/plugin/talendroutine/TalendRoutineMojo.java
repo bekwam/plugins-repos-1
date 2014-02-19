@@ -55,9 +55,9 @@ public class TalendRoutineMojo extends AbstractMojo {
 	private MavenProject project;
 	
 	/**
-     * Location of the file.
+     * Location of the talend.project file.
      */
-    @Parameter( defaultValue = "${project.build.directory}", property = "outputDir", required = true )
+    @Parameter( defaultValue = "${project.build.directory}/TALENDROUTINE", property = "outputDir", required = true )
     private File outputDir;
 
     /**
@@ -79,16 +79,10 @@ public class TalendRoutineMojo extends AbstractMojo {
     private String purpose;
     
     /**
-     * Major version of Routine
+     * Major and minor version of routine (ex, "1.5")
      */
-    @Parameter(defaultValue="1", property="majorVersion", required=true)
-    private int majorVersion;
-    
-    /**
-     * Minor version of Routine
-     */
-    @Parameter(defaultValue="0", property="minorVersion", required=true)
-    private int minorVersion;
+    @Parameter(defaultValue="1.0", property="version", required=true)
+    private String version;
     
     /**
      * Folder containing Routine
@@ -103,9 +97,8 @@ public class TalendRoutineMojo extends AbstractMojo {
         if ( !f.exists() ) {
             f.mkdirs();
         }
-
-        String versionString = majorVersion + "." + minorVersion;        
-        String filename = label + "_" + majorVersion + "." + minorVersion + ".properties";
+        
+        String filename = label + "_" + version + ".properties";
         String xmiId = "_" + RandomStringUtils.randomAlphanumeric(22);
         
         getLog().debug("generating filename=" + filename );
@@ -127,12 +120,12 @@ public class TalendRoutineMojo extends AbstractMojo {
 
             bw.write( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" ); bw.newLine();
             bw.write( "<xmi:XMI xmi:version=\"2.0\" xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:TalendProperties=\"http://www.talend.org/properties\">" );  bw.newLine();
-            bw.write( "  <TalendProperties:Property xmi:id=\"" + xmiId + "\" id=\"_NkZ6AJEEEeC4zfWT--Xipg\" label=\"" + label + "\" purpose=\"" + purpose + "\" description=\"" + description + "\" creationDate=\"" + date_s + "\" modificationDate=\"" + date_s + "\" version=\"" + versionString + "\" statusCode=\"PROD\" item=\"_Ebj3Mg4sEeGtbb8OJdAnvg\"> ");  bw.newLine();
+            bw.write( "  <TalendProperties:Property xmi:id=\"" + xmiId + "\" id=\"_NkZ6AJEEEeC4zfWT--Xipg\" label=\"" + label + "\" purpose=\"" + purpose + "\" description=\"" + description + "\" creationDate=\"" + date_s + "\" modificationDate=\"" + date_s + "\" version=\"" + version + "\" statusCode=\"PROD\" item=\"_Ebj3Mg4sEeGtbb8OJdAnvg\"> ");  bw.newLine();
             bw.write( "    <author href=\"../../../talend.project#" + xmiId + "\"/>" );  bw.newLine();
             bw.write( "  </TalendProperties:Property>" );  bw.newLine();
             bw.write( "  <TalendProperties:ItemState xmi:id=\"" + "\" path=\"" + path + "\"/>" );  bw.newLine();
             bw.write( "  <TalendProperties:RoutineItem xmi:id=\"" + xmiId + "\" property=\"" + xmiId + "\" state=\"" + xmiId + "\"> ");  bw.newLine();
-            bw.write( "    <content href=\"" + label + "_" + versionString + ".item#/0\"/>" );  bw.newLine();
+            bw.write( "    <content href=\"" + label + "_" + version + ".item#/0\"/>" );  bw.newLine();
             
             Set<Artifact> artifacts = project.getDependencyArtifacts();
             
