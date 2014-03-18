@@ -46,6 +46,8 @@ public class TalendRoutineMojo extends AbstractMojo {
 	
     private final static String PROJECT_FILE_NAME = "talend.project";
     
+    private final static String PROPERTY_ID = "_NkZ6AJEEEeC4zfWT--Xipg";
+    
 	/**
 	 * @parameter default-value="${project}"
 	 * @required
@@ -100,6 +102,10 @@ public class TalendRoutineMojo extends AbstractMojo {
         
         String filename = label + "_" + version + ".properties";
         String xmiId = "_" + RandomStringUtils.randomAlphanumeric(22);
+        String id = PROPERTY_ID;
+        String routineId = "_" + RandomStringUtils.randomAlphanumeric(22);
+        String stateId = "_" + RandomStringUtils.randomAlphanumeric(22);
+        String authorId = "_" + RandomStringUtils.randomAlphanumeric(22);
         
         getLog().debug("generating filename=" + filename );
         getLog().debug("using xmiId=" + xmiId);
@@ -120,11 +126,11 @@ public class TalendRoutineMojo extends AbstractMojo {
 
             bw.write( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" ); bw.newLine();
             bw.write( "<xmi:XMI xmi:version=\"2.0\" xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:TalendProperties=\"http://www.talend.org/properties\">" );  bw.newLine();
-            bw.write( "  <TalendProperties:Property xmi:id=\"" + xmiId + "\" id=\"_NkZ6AJEEEeC4zfWT--Xipg\" label=\"" + label + "\" purpose=\"" + purpose + "\" description=\"" + description + "\" creationDate=\"" + date_s + "\" modificationDate=\"" + date_s + "\" version=\"" + version + "\" statusCode=\"PROD\" item=\"_Ebj3Mg4sEeGtbb8OJdAnvg\"> ");  bw.newLine();
-            bw.write( "    <author href=\"../../../talend.project#" + xmiId + "\"/>" );  bw.newLine();
+            bw.write( "  <TalendProperties:Property xmi:id=\"" + xmiId + "\" id=\"" + id + "\" label=\"" + label + "\" purpose=\"" + purpose + "\" description=\"" + description + "\" creationDate=\"" + date_s + "\" modificationDate=\"" + date_s + "\" version=\"" + version + "\" statusCode=\"PROD\" item=\"" + routineId + "\"> ");  bw.newLine();
+            bw.write( "    <author href=\"../../../talend.project#" + authorId + "\"/>" );  bw.newLine();
             bw.write( "  </TalendProperties:Property>" );  bw.newLine();
-            bw.write( "  <TalendProperties:ItemState xmi:id=\"" + "\" path=\"" + path + "\"/>" );  bw.newLine();
-            bw.write( "  <TalendProperties:RoutineItem xmi:id=\"" + xmiId + "\" property=\"" + xmiId + "\" state=\"" + xmiId + "\"> ");  bw.newLine();
+            bw.write( "  <TalendProperties:ItemState xmi:id=\"" + stateId + "\" path=\"" + path + "\"/>" );  bw.newLine();
+            bw.write( "  <TalendProperties:RoutineItem xmi:id=\"" + routineId + "\" property=\"" + xmiId + "\" state=\"" + stateId + "\"> ");  bw.newLine();
             bw.write( "    <content href=\"" + label + "_" + version + ".item#/0\"/>" );  bw.newLine();
             
             Set<Artifact> artifacts = project.getDependencyArtifacts();
@@ -135,11 +141,14 @@ public class TalendRoutineMojo extends AbstractMojo {
             			StringUtils.equals( a.getType(), "jar" ) ) {
             		
             		String jarName = a.getArtifactId() + "-" + a.getVersion() + ".jar";
-            		String message = a.getGroupId() + ":" + a.getArtifactId();
-
+            		//String message = a.getGroupId() + ":" + a.getArtifactId();
+            		String message = "Required for using this component.";
+            		
             		getLog().debug("jarName=" + jarName + ", message=" + message);
             		
-            		bw.write( "    <imports xmi:id=\"" + xmiId + "\" mESSAGE=\"" + message + "\" mODULE=\"" + jarName + "\" nAME=\"" + a.getArtifactId() + "\" rEQUIRED=\"true\" />" );  bw.newLine();
+            		String importId = "_" + RandomStringUtils.randomAlphanumeric(22);
+            		
+            		bw.write( "    <imports xmi:id=\"" + importId + "\" mESSAGE=\"" + message + "\" mODULE=\"" + jarName + "\" nAME=\"" + a.getArtifactId() + "\" rEQUIRED=\"true\" />" );  bw.newLine();
             	}
             }
             
@@ -164,11 +173,13 @@ public class TalendRoutineMojo extends AbstractMojo {
             w = new FileWriter( talendProjectFile );
             bw = new BufferedWriter( w );
             
+            String projectId = "_" + RandomStringUtils.randomAlphanumeric(22);
+
             bw.write( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" ); bw.newLine();            
             bw.write( "<xmi:XMI xmi:version=\"2.0\" xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:TalendProperties=\"http://www.talend.org/properties\">" ); bw.newLine();
-            bw.write( "  <TalendProperties:Project xmi:id=\"" + xmiId + "\" label=\"TALENDPROJECT\" description=\"Project for testing new components\" language=\"java\" technicalLabel=\"TALENDPROJECT\" local=\"true\" productVersion=\"Talend Open Studio-4.2.2.r63143\" itemsRelationVersion=\"1.1\">" ); bw.newLine();   
+            bw.write( "  <TalendProperties:Project xmi:id=\"" + projectId + "\" label=\"TALENDPROJECT\" description=\"Project for testing new components\" language=\"java\" technicalLabel=\"TALENDPROJECT\" local=\"true\" productVersion=\"Talend Open Studio-4.2.2.r63143\" itemsRelationVersion=\"1.1\">" ); bw.newLine();   
             bw.write( "  </TalendProperties:Project>" ); bw.newLine();
-            bw.write( "  <TalendProperties:User xmi:id=\"" + xmiId + "\" login=\"exportuser@talend.com\"/>" ); bw.newLine();
+            bw.write( "  <TalendProperties:User xmi:id=\"" + authorId + "\" login=\"exportuser@talend.com\"/>" ); bw.newLine();
             bw.write( "</xmi:XMI>" ); bw.newLine();
 
         }
