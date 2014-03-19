@@ -4,7 +4,6 @@
 
 	<groupId>org.bekwam</groupId>
 	<artifactId>talendroutine-maven-plugin</artifactId>
-	<version>1.0.0</version>
 	<packaging>maven-plugin</packaging>
 
 	<properties>
@@ -150,4 +149,5 @@
 		<developerConnection>scm:git:ssh://git@github.com:bekwam/plugins-repos-1.git</developerConnection>
 	</scm>
 	
+	<version>1.1.0-SNAPSHOT</version>
 </project>
