@@ -7,11 +7,6 @@
 	<version>1.0.0</version>
 	<packaging>maven-plugin</packaging>
 
-	<name>talendroutine-maven-plugin Maven Plugin</name>
-
-	<!-- FIXME change it to the project's website -->
-	<url>http://maven.apache.org</url>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -61,6 +56,12 @@
 		</dependency>
 	</dependencies>
 
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -97,4 +98,28 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<name>TalendRoutine Maven Plugin</name>
+	<description>A Maven Plugin for packaging a Talend Open Studio Routine</description>
+	<url>http://www.bekwam.org</url>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<id>walkerca</id>
+			<name>Carl Walker</name>
+			<email>dev@bekwam.com</email>
+		</developer>
+	</developers>
+	<scm>
+		<url>https://github.com/bekwam/plugins-repos-1.git</url>
+		<connection>scm:git:https://github.com/bekwam/plugins-repos-1.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com:bekwam/plugins-repos-1.git</developerConnection>
+	</scm>
+	
 </project>
